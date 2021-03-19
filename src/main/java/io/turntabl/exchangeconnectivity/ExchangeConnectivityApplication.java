@@ -29,7 +29,44 @@ public class ExchangeConnectivityApplication {
 
 					// WebClient /orderbook/{product}/{side}'
 					System.out.println("#1");
-					String response ="[{\"product\":\"IBM\",\"quantity\":2,\"price\":0.23,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":60,\"price\":0.23,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":2,\"price\":0.11,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":2,\"price\":0.12,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":5,\"price\":0.09,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":5,\"price\":0.09,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":2,\"price\":0.11,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":50,\"price\":0.12,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":50,\"price\":0.12,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":5,\"price\":0.12,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":1234,\"price\":0.12,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":50,\"price\":0.5,\"side\":\"BUY\",\"executions\":[{\"timestamp\":\"2020-11-19T15:33:01.266\",\"price\":0.5,\"quantity\":7}],\"cumulatitiveQuantity\":7}]";
+					String response ="[" +
+							"{" + "\"product\":\"IBM\"," +
+							"\"quantity\":2," +
+							"\"price\":0.23," +
+							"\"side\":\"BUY\"," +
+							"\"executions\":[]," +
+							"\"cumulatitiveQuantity\":0" +
+							"}" +
+							"," +
+							"{\"product\":\"IBM\"," +
+							"\"quantity\":60," +
+							"\"price\":0.23," +
+							"\"side\":\"BUY\"," +
+							"\"executions\":[]," +
+							"\"cumulatitiveQuantity\":0" +
+							"}," +
+							"{\"product\":\"IBM\"," +
+							"\"quantity\":2," +
+							"\"price\":0.11," +
+							"\"side\":\"BUY\"," +
+							"\"executions\":[]," +
+							"\"cumulatitiveQuantity\":0" +
+							"}," +
+							"{\"product\":\"IBM\"," +
+							"\"quantity\":2," +
+							"\"price\":0.12," +
+							"\"side\":\"BUY\"," +
+							"\"executions\":[]," +
+							"\"cumulatitiveQuantity\":0" +
+							"}," +
+							"{\"product\":\"IBM\"," +
+							"\"quantity\":5," +
+							"\"price\":0.09," +
+							"\"side\":\"BUY\"," +
+							"\"executions\":[]," +
+							"\"cumulatitiveQuantity\":0" +
+							"}," +
+							"{\"product\":\"IBM\",\"quantity\":5,\"price\":0.09,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":2,\"price\":0.11,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":50,\"price\":0.12,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":50,\"price\":0.12,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":5,\"price\":0.12,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":1234,\"price\":0.12,\"side\":\"BUY\",\"executions\":[],\"cumulatitiveQuantity\":0},{\"product\":\"IBM\",\"quantity\":50,\"price\":0.5,\"side\":\"BUY\",\"executions\":[{\"timestamp\":\"2020-11-19T15:33:01.266\",\"price\":0.5,\"quantity\":7}],\"cumulatitiveQuantity\":7}]";
 					PendingOrder[] pendingOrders = Utility.convertToObject(response, PendingOrder[].class);
 
 					if(pendingOrders == null){
@@ -39,11 +76,13 @@ public class ExchangeConnectivityApplication {
 					for (int i = 0 ; i< pendingOrders.length;i++){
 
 						//CONVERT TICKERS HERE
-						pendingOrders[i].getExchange() = "exchange1";
+						String exchange = pendingOrders[i].getExchange();
+						System.out.println(exchange);
+
 					}
 					System.out.println("#3");
-					jedis.lpush(orderBookRequest.getId() + "orderbook",Utility.convertToString(pendingOrders));
-					jedis.lpush(orderBookRequest.getId() + "orderbook",Utility.convertToString(pendingOrders));
+					jedis.lpush(orderBookRequest.getId() + "orderbook1",Utility.convertToString(pendingOrders));
+					jedis.lpush(orderBookRequest.getId() + "orderbook2",Utility.convertToString(pendingOrders));
 				}
 			}
 		}).start();

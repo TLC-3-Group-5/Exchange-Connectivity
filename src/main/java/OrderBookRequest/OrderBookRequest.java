@@ -4,6 +4,7 @@ public class OrderBookRequest {
 
     private String id;
     private String product;
+    private String price;
     private String side;
 
     public OrderBookRequest(){}
@@ -36,5 +37,13 @@ public class OrderBookRequest {
 
     public void setSide(String side) {
         this.side = side;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 }
