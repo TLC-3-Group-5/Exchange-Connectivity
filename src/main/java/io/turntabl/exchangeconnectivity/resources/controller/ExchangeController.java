@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.JsonObject;
 import io.turntabl.exchangeconnectivity.resources.model.Trade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -26,6 +27,10 @@ public class ExchangeController {
     @Autowired
     private Environment env;
 
+//    @Bean
+//    public RestTemplate restTemplate() {
+//        return new RestTemplate();
+//    }
 
     @PostMapping(path="create-order")
     public String createOrders(@RequestBody Trade trade) throws JsonProcessingException {
