@@ -29,7 +29,7 @@ public class ExchangeController {
     private final String EXCHANGE_API_KEY;
 
     public ExchangeController() {
-        EXCHANGE_API_KEY = env.getProperty("app.exchange_api_key")
+        EXCHANGE_API_KEY = env.getProperty("app.exchange_api_key");
     }
 
     @PostMapping(path = "create-order")
