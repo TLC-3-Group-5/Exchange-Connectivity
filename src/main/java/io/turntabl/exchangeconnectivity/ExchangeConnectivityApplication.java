@@ -1,5 +1,6 @@
 package io.turntabl.exchangeconnectivity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.turntabl.exchangeconnectivity.resources.controller.ReceiveOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -27,7 +28,11 @@ public class ExchangeConnectivityApplication {
 		// create instance of ReceiveOrder with context
 		ReceiveOrder receiveOrder = ctx.getBean(ReceiveOrder.class);
 		// Call receiveOrder() method to keep checking queue
-		receiveOrder.receiveOrder();
+		try {
+			receiveOrder.receiveOrder();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 
 	}
 

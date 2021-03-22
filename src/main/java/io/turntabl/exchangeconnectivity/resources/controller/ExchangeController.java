@@ -35,26 +35,23 @@ public class ExchangeController {
     @PostMapping(path="create-order")
     public String createOrders(@RequestBody Trade trade) throws JsonProcessingException {
         HttpEntity<Trade> trades = new HttpEntity<>(trade);
-        String exchange1 = "https://exchange.matraining.com/" + env.getProperty("api_key") + "/order";
-        String exchange2 = "https://exchange2.matraining.com/" + env.getProperty("api_key") + "/order";
-        ResponseEntity<String> orderResponse = this.restTemplate
-                .postForEntity(exchange1,trades, String.class);
-        JsonNode root = objectMapper.readTree(orderResponse.getBody());
-        return root.toString();
+         String exchangeUrl = "https://"+ trade.getExchange() + ".matraining.com/" + env.getProperty("api_key") + "/order";
+//         String exchangeUrl = "https://"+ "exchange2" + ".matraining.com/" + env.getProperty("api_key") + "/order";
+         ResponseEntity<String> orderResponse = this.restTemplate
+                    .postForEntity(exchangeUrl,trades, String.class);
+         JsonNode root = objectMapper.readTree(orderResponse.getBody());
+         return root.toString();
     }
 
-    @GetMapping(path="get-order-status")
-    public String getOrderStatus() throws JsonProcessingException {
-        String orderId = "479db8ee-d5b1-45be-a54e-af9986312a85";
-        String exchange1 = "https://exchange.matraining.com/" + env.getProperty("api_key") + "/order/"+orderId;
-        String exchange2 = "https://exchange2.matraining.com/" + env.getProperty("api_key") + "/order";
-        return restTemplate.getForObject(exchange1, String.class);
+    @GetMapping(path="get-order-status/{{exchangeId}}/{{exchange}}")
+    public String getOrderStatus(@PathVariable String exchangeId, @PathVariable String exchange) throws JsonProcessingException {
+        String exchangeUrl = "https://" + exchange +".matraining.com/" + env.getProperty("api_key") + "/order/"+exchangeId;
+        return restTemplate.getForObject(exchangeUrl, String.class);
     }
 
-    @DeleteMapping(path="cancel-order")
-    public void cancelOrder(){
-        String orderId = "479db8ee-d5b1-45be-a54e-af9986312a85";
-        String exchange1 = "https://exchange.matraining.com/" + env.getProperty("api_key") + "/order/"+orderId;
-        restTemplate.delete(exchange1);
+    @DeleteMapping(path="cancel-order/{{exchangeId}}/{{exchange}}")
+    public void cancelOrder(@PathVariable String exchangeId, @PathVariable String exchange){
+        String exchangeUrl = "https://" + exchange + ".matraining.com/" + env.getProperty("api_key") + "/order/"+exchangeId;
+        restTemplate.delete(exchangeUrl);
     }
 }
