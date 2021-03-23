@@ -34,8 +34,7 @@ public class ReceiveOrder {
     // Method to keep checking queue
     public void receiveOrder() throws JsonProcessingException {
         Jedis jedis = new Jedis(
-            Optional.ofNullable(env.getProperty("app.SPRING_REDIS_URL")).orElse(""),
-            Optional.ofNullable(Integer.parseInt(env.getProperty("app.SPRING_REDIS_PORT"))).orElse(0)
+            Optional.ofNullable(env.getProperty("app.SPRING_REDIS_URI")).orElse("")
         );
 
         while(true) {
