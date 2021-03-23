@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import io.turntabl.exchangeconnectivity.resources.model.Trade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -24,34 +25,30 @@ public class ExchangeController {
     @Autowired
     RestTemplate restTemplate;
 
-    @Autowired
-    private Environment env;
+    @Value("${app.exchange_api_key}")
+    private String exchangeApiKey;
 
-//    @Bean
-//    public RestTemplate restTemplate() {
-//        return new RestTemplate();
-//    }
-
-    @PostMapping(path="create-order")
+    @PostMapping(path = "create-order")
     public String createOrders(@RequestBody Trade trade) throws JsonProcessingException {
         HttpEntity<Trade> trades = new HttpEntity<>(trade);
-         String exchangeUrl = "https://"+ trade.getExchange() + ".matraining.com/" + env.getProperty("api_key") + "/order";
-//         String exchangeUrl = "https://"+ "exchange2" + ".matraining.com/" + env.getProperty("api_key") + "/order";
-         ResponseEntity<String> orderResponse = this.restTemplate
-                    .postForEntity(exchangeUrl,trades, String.class);
-         JsonNode root = objectMapper.readTree(orderResponse.getBody());
-         return root.toString();
+        String exchangeUrl = "https://" + trade.getExchange() + ".matraining.com/" + exchangeApiKey + "/order";
+        // String exchangeUrl = "https://"+ "exchange2" + ".matraining.com/" +
+        // exchangeApiKey + "/order";
+        ResponseEntity<String> orderResponse = this.restTemplate.postForEntity(exchangeUrl, trades, String.class);
+        JsonNode root = objectMapper.readTree(orderResponse.getBody());
+        return root.toString();
     }
 
-    @GetMapping(path="get-order-status/{exchangeId}/{exchange}")
-    public String getOrderStatus(@PathVariable("exchangeId") String exchangeId, @PathVariable("exchange") String exchange) throws JsonProcessingException {
-        String exchangeUrl = "https://" + exchange +".matraining.com/" + env.getProperty("api_key") + "/order/"+exchangeId;
+    @GetMapping(path = "get-order-status/{exchangeId}/{exchange}")
+    public String getOrderStatus(@PathVariable("exchangeId") String exchangeId,
+            @PathVariable("exchange") String exchange) throws JsonProcessingException {
+        String exchangeUrl = "https://" + exchange + ".matraining.com/" + exchangeApiKey + "/order/" + exchangeId;
         return restTemplate.getForObject(exchangeUrl, String.class);
     }
 
-    @DeleteMapping(path="cancel-order/{exchangeId}/{exchange}")
-    public void cancelOrder(@PathVariable String exchangeId, @PathVariable String exchange){
-        String exchangeUrl = "https://" + exchange + ".matraining.com/" + env.getProperty("api_key") + "/order/"+exchangeId;
+    @DeleteMapping(path = "cancel-order/{exchangeId}/{exchange}")
+    public void cancelOrder(@PathVariable String exchangeId, @PathVariable String exchange) {
+        String exchangeUrl = "https://" + exchange + ".matraining.com/" + exchangeApiKey + "/order/" + exchangeId;
         restTemplate.delete(exchangeUrl);
     }
 }
