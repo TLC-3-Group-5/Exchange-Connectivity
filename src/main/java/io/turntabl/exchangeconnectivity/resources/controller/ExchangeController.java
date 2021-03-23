@@ -43,13 +43,13 @@ public class ExchangeController {
          return root.toString();
     }
 
-    @GetMapping(path="get-order-status/{{exchangeId}}/{{exchange}}")
-    public String getOrderStatus(@PathVariable String exchangeId, @PathVariable String exchange) throws JsonProcessingException {
+    @GetMapping(path="get-order-status/{exchangeId}/{exchange}")
+    public String getOrderStatus(@PathVariable("exchangeId") String exchangeId, @PathVariable("exchange") String exchange) throws JsonProcessingException {
         String exchangeUrl = "https://" + exchange +".matraining.com/" + env.getProperty("api_key") + "/order/"+exchangeId;
         return restTemplate.getForObject(exchangeUrl, String.class);
     }
 
-    @DeleteMapping(path="cancel-order/{{exchangeId}}/{{exchange}}")
+    @DeleteMapping(path="cancel-order/{exchangeId}/{exchange}")
     public void cancelOrder(@PathVariable String exchangeId, @PathVariable String exchange){
         String exchangeUrl = "https://" + exchange + ".matraining.com/" + env.getProperty("api_key") + "/order/"+exchangeId;
         restTemplate.delete(exchangeUrl);
