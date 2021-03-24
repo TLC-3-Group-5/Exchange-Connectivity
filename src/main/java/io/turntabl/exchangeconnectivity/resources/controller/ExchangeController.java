@@ -46,7 +46,9 @@ public class ExchangeController {
     @GetMapping(path="get-order-status/{exchangeId}/{exchange}")
     public String getOrderStatus(@PathVariable("exchangeId") String exchangeId, @PathVariable("exchange") String exchange) throws JsonProcessingException {
         String exchangeUrl = "https://" + exchange +".matraining.com/" + env.getProperty("api_key") + "/order/"+exchangeId;
-        return restTemplate.getForObject(exchangeUrl, String.class);
+        String result = restTemplate.getForObject(exchangeUrl, String.class);
+        JsonNode root = objectMapper.readTree(result);
+        return root.toString();
     }
 
     @DeleteMapping(path="cancel-order/{exchangeId}/{exchange}")
