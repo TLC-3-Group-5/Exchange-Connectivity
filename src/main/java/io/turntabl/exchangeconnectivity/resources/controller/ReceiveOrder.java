@@ -28,6 +28,8 @@ public class ReceiveOrder {
     @Autowired
     Environment env;
 
+    private static final int FIXED_TIMEOUT = 0;
+
     public ReceiveOrder() {}
 
     ObjectMapper objectMapper = new ObjectMapper();
@@ -38,7 +40,7 @@ public class ReceiveOrder {
         );
 
         while(true) {
-            List<String> output = jedis.blpop(0, "exchange1");
+            List<String> output = jedis.blpop(FIXED_TIMEOUT, "exchange1");
             Trade request = objectMapper.readValue(output.get(1), Trade.class);
             System.out.println(output.get(1));
             System.out.println(request);
